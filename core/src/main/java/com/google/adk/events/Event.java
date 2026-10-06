@@ -23,6 +23,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.adk.JsonBaseModel;
+import com.google.adk.models.CacheMetadata;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
@@ -66,6 +67,7 @@ public class Event extends JsonBaseModel {
   private @Nullable String modelVersion;
   private @Nullable Transcription inputTranscription;
   private @Nullable Transcription outputTranscription;
+  private @Nullable CacheMetadata cacheMetadata;
 
   private long timestamp;
 
@@ -301,6 +303,19 @@ public class Event extends JsonBaseModel {
     this.outputTranscription = outputTranscription;
   }
 
+  /**
+   * Context cache state of the LLM response this event carries. The next request of the same agent
+   * reads it to reuse or refresh the cache.
+   */
+  @JsonProperty("cacheMetadata")
+  public Optional<CacheMetadata> cacheMetadata() {
+    return Optional.ofNullable(cacheMetadata);
+  }
+
+  public void setCacheMetadata(@Nullable CacheMetadata cacheMetadata) {
+    this.cacheMetadata = cacheMetadata;
+  }
+
   /** The timestamp of the event. */
   @JsonProperty("timestamp")
   public long timestamp() {
@@ -410,6 +425,7 @@ public class Event extends JsonBaseModel {
     private @Nullable String modelVersion;
     private @Nullable Transcription inputTranscription;
     private @Nullable Transcription outputTranscription;
+    private @Nullable CacheMetadata cacheMetadata;
     private @Nullable Long timestamp;
 
     @JsonCreator
@@ -582,6 +598,13 @@ public class Event extends JsonBaseModel {
       return this;
     }
 
+    @CanIgnoreReturnValue
+    @JsonProperty("cacheMetadata")
+    public Builder cacheMetadata(@Nullable CacheMetadata value) {
+      this.cacheMetadata = value;
+      return this;
+    }
+
     public Event build() {
       Event event = new Event();
       event.setId(id);
@@ -605,6 +628,7 @@ public class Event extends JsonBaseModel {
       event.setTimestamp(timestamp().orElseGet(() -> Instant.now().toEpochMilli()));
       event.setInputTranscription(inputTranscription);
       event.setOutputTranscription(outputTranscription);
+      event.setCacheMetadata(cacheMetadata);
       return event;
     }
   }
@@ -641,7 +665,8 @@ public class Event extends JsonBaseModel {
             .customMetadata(this.customMetadata)
             .modelVersion(this.modelVersion)
             .inputTranscription(this.inputTranscription)
-            .outputTranscription(this.outputTranscription);
+            .outputTranscription(this.outputTranscription)
+            .cacheMetadata(this.cacheMetadata);
     if (this.timestamp != 0) {
       builder.timestamp(this.timestamp);
     }
@@ -676,7 +701,8 @@ public class Event extends JsonBaseModel {
         && Objects.equals(customMetadata, other.customMetadata)
         && Objects.equals(modelVersion, other.modelVersion)
         && Objects.equals(inputTranscription, other.inputTranscription)
-        && Objects.equals(outputTranscription, other.outputTranscription);
+        && Objects.equals(outputTranscription, other.outputTranscription)
+        && Objects.equals(cacheMetadata, other.cacheMetadata);
   }
 
   @Override
@@ -707,6 +733,7 @@ public class Event extends JsonBaseModel {
         modelVersion,
         inputTranscription,
         outputTranscription,
+        cacheMetadata,
         timestamp);
   }
 }
