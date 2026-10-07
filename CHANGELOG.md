@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.12.0](https://github.com/google/adk-java/compare/v1.11.0...v1.12.0) (2026-10-07)
+
+
+### Features
+
+* add an injectable scheduler for ADK's internal fan-out ([1b89d23](https://github.com/google/adk-java/commit/1b89d23b78c09b87b0dd7d2d7daac866fd9fc5c0))
+* add injectable time and UUID providers for timestamps and ids ([caccc7c](https://github.com/google/adk-java/commit/caccc7cbbc3198b35bd769d20d72c1cd68a08d4c))
+* carry the continuation token across the Kotlin engine interop ([b3f0665](https://github.com/google/adk-java/commit/b3f0665288a9a388ec5c323733df460be9aaeaa1))
+
+
+### Bug Fixes
+
+* **a2a:** skip an unconvertible remote A2A part instead of failing the turn ([9debe96](https://github.com/google/adk-java/commit/9debe96751165fbf63f41858f87ae8deddcff7e4))
+* run approved tool confirmations for agents under a ParallelAgent ([f866804](https://github.com/google/adk-java/commit/f866804518e6fd2bb2ebb206bcb11007f17dca98))
+* wait for the transfer event to be persisted before running the transfer target ([9f5d5ce](https://github.com/google/adk-java/commit/9f5d5ce736c9a9aff7f5ae5b4390c93507519e68))
+
 ## [1.11.0](https://github.com/google/adk-java/compare/v1.10.1...v1.11.0) (2026-10-02)
 
 
